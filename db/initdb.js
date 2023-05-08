@@ -6,14 +6,20 @@ async function main() {
   try {
     connection = await getConnection();
 
-    // await connection.query('DROP DATABASE IF EXISTS hackagram');
-    // await connection.query('CREATE DATABASE IF NOT EXISTS hackagram');
-    await connection.query('USE hackagram');
+    await connection.query('DROP DATABASE IF EXISTS hackagram');
+    await connection.query('CREATE DATABASE hackagram');
 
     console.log('Base de datos creada!!');
 
+    await connection.query('USE hackagram');
+
+    await connection.query('DROP TABLE IF EXISTS comments');
+    await connection.query('DROP TABLE IF EXISTS likes');
+    await connection.query('DROP TABLE IF EXISTS posts');
+    await connection.query('DROP TABLE IF EXISTS users');
+
     await connection.query(`CREATE TABLE users (
-            id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
             username VARCHAR(50) UNIQUE NOT NULL,
@@ -22,8 +28,8 @@ async function main() {
 
     await connection.query(`
     CREATE TABLE posts (
-        id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        user_id INTEGER NOT NULL,
+        id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+        user_id INTEGER UNSIGNED,
         FOREIGN KEY (user_id) REFERENCES users(id),
         post_text VARCHAR(500),
         post_image VARCHAR(100) NOT NULL,
@@ -32,31 +38,31 @@ async function main() {
     `);
     console.log('Tabla posts creada!!');
 
-    // REVISAR CONSTRAINT en likes y comments!!!
-    // await connection.query(`
-    // CREATE TABLE likes (
-    //     user_id INTEGER UNSIGNED NOT NULL,
-    //     post_id INTEGER UNSIGNED NOT NULL,
-    //     PRIMARY KEY(user_id,post_id),
-    //     FOREIGN KEY (user_id) REFERENCES users(id),
-    //     FOREIGN KEY (post_id) REFERENCES posts(id),
-    //     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    // )
-    // `);
-    // console.log('Tabla likes creada!!');
+    await connection.query(`
+    CREATE TABLE comments (
+        id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+        comment VARCHAR(500),
+        user_id INTEGER UNSIGNED,
+        post_id INTEGER UNSIGNED,
+        CONSTRAINT user_id_comments FOREIGN KEY (user_id) REFERENCES users(id),
+        CONSTRAINT post_id_comments FOREIGN KEY (post_id) REFERENCES posts(id),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    `);
 
-    // await connection.query(`
-    // CREATE TABLE comments (
-    //     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    //     comment VARCHAR(500),
-    //     user_id INTEGER UNSIGNED NOT NULL,
-    //     post_id INTEGER UNSIGNED NOT NULL,
-    //     FOREIGN KEY (user_id) REFERENCES users(id),
-    //     FOREIGN KEY (post_id) REFERENCES posts(id),
-    //     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    // )
-    // `);
-    // console.log('Tabla comments creada!!');
+    console.log('Tabla comments creada!!');
+
+    await connection.query(`
+    CREATE TABLE likes (
+        user_id INTEGER UNSIGNED,
+        post_id INTEGER UNSIGNED,
+        PRIMARY KEY(user_id,post_id),
+        CONSTRAINT user_id_likes FOREIGN KEY (user_id) REFERENCES users(id),
+        CONSTRAINT post_id_likes FOREIGN KEY (post_id) REFERENCES posts(id),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    `);
+    console.log('Tabla likes creada!!');
   } catch (error) {
     console.error(error);
   } finally {
