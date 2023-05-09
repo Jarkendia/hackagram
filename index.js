@@ -1,18 +1,41 @@
 require('dotenv').config();
-const { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE } =
-  process.env;
+const bcrypt = require('bcryptjs');
+const { MYSQL_PORT } = process.env;
 
 // console.log(process.env);
 
 const express = require('express');
 const morgan = require('morgan');
+const {
+  newUserController,
+  getUserController,
+  loginController,
+} = require('./controllers/users');
+
+const {
+  getImageController,
+  newImageController,
+  getSingleImageController,
+  deleteImageController,
+} = require('./controllers/images');
 
 const app = express();
 
-// app.use(morgan('dev')); | INFO de desarrollo
+// | INFO de desarrollo
+app.use(morgan('dev'));
 
 //Rutas para cada ENDPOINT
 
+//Rutas de usuario
+app.post('/user', newUserController);
+app.get('/user/:id', getUserController);
+app.post('/login', loginController);
+
+//Rutas de Posts
+app.get('/', getImageController);
+app.post('/', newImageController);
+app.get('/image/:id', getSingleImageController);
+app.delete('/image/:id', deleteImageController);
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {
   res.status(404).send({
