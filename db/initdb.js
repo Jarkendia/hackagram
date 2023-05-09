@@ -1,4 +1,5 @@
 const { getConnection } = require('./db');
+require('dotenv').config({ path: '../.env' });
 
 async function main() {
   let connection;
