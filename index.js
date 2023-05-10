@@ -1,6 +1,4 @@
 require('dotenv').config();
-const bcrypt = require('bcryptjs');
-const { MYSQL_PORT } = process.env;
 const port = 4000;
 // console.log(process.env);
 
@@ -19,6 +17,8 @@ const {
   deleteImageController,
 } = require('./controllers/images');
 
+const { authUser } = require('./middlewares/auth');
+
 const app = express();
 
 // | INFO de desarrollo
@@ -33,10 +33,11 @@ app.get('/user/:id', getUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts
+app.post('/', authUser, newImageController);
 app.get('/', getImageController);
-app.post('/', newImageController);
 app.get('/image/:id', getSingleImageController);
 app.delete('/image/:id', deleteImageController);
+
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {
   res.status(404).send({
