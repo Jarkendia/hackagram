@@ -1,18 +1,28 @@
 const { generateError } = require('../helpers');
 const { createUser } = require('../db/usersdb');
+const Joi = require('joi');
 const newUserController = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
     //Sustituir por Joi
 
-    if (!email || !password) {
-      throw generateError(
-        'Debes introducir un email y un password valido',
-        400
-      );
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(4).required(),
+      username: Joi.string().alphanum().min(3).max(30).required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).send({
+        status: 'error',
+        message: 'Invalid data',
+        error: error.details[0].message,
+      });
     }
-    const id = await createUser(email, password);
+    const id = await createUser(email, password, username);
 
     res.send({
       status: 'ok',
