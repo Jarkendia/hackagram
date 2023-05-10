@@ -7,11 +7,6 @@ async function main() {
   try {
     connection = await getConnection();
 
-    await connection.query('DROP DATABASE IF EXISTS hackagram');
-    await connection.query('CREATE DATABASE hackagram');
-
-    console.log('Base de datos creada!!');
-
     await connection.query('USE hackagram');
 
     await connection.query('DROP TABLE IF EXISTS comments');
