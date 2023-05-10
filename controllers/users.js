@@ -27,7 +27,7 @@ const newUserController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      message: `User created with id: ${id}`,
+      message: `Perfil de ${username} creado con el id ${id}`,
     });
   } catch (error) {
     next(error);
@@ -35,7 +35,7 @@ const newUserController = async (req, res, next) => {
 };
 const getUserController = async (req, res, next) => {
   try {
-    const id = req.params;
+    const { id } = req.params;
 
     const user = await getUserById(id);
 

@@ -1,15 +1,16 @@
 require('dotenv').config();
 const port = 4000;
-// console.log(process.env);
 
 const express = require('express');
 const morgan = require('morgan');
+const imageUpload = require('express-fileupload');
+// Controllers de USERS
 const {
   newUserController,
   getUserController,
   loginController,
 } = require('./controllers/users');
-
+// Controllers de IMAGES
 const {
   getImageController,
   newImageController,
@@ -22,8 +23,9 @@ const { authUser } = require('./middlewares/auth');
 const app = express();
 
 // | INFO de desarrollo
-app.use(morgan('dev'));
+app.use(imageUpload());
 app.use(express.json());
+app.use(morgan('dev'));
 
 //Rutas para cada ENDPOINT
 

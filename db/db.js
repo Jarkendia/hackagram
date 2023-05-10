@@ -6,8 +6,6 @@ const mysql = require('mysql2/promise');
 const { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE } =
   process.env;
 
-console.log(process.env);
-
 let pool;
 
 const getConnection = async () => {
