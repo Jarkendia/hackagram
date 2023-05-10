@@ -1,7 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { MYSQL_PORT } = process.env;
-
+const port = 4000;
 // console.log(process.env);
 
 const express = require('express');
@@ -23,6 +23,7 @@ const app = express();
 
 // | INFO de desarrollo
 app.use(morgan('dev'));
+app.use(express.json());
 
 //Rutas para cada ENDPOINT
 
@@ -53,6 +54,6 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(MYSQL_PORT, () => {
-  console.log(`Servidor iniciado en el puerto ${MYSQL_PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor iniciado en el puerto ${port}`);
 });

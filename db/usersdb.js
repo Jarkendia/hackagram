@@ -3,7 +3,7 @@ const { getConnection } = require('./db');
 const bcrypt = require('bcryptjs');
 //Crea un usuario en la base de datos  y devuelve su id
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, username) => {
   let connection;
 
   try {
@@ -23,9 +23,9 @@ const createUser = async (email, password) => {
     //Crear el usuario
     const [newUser] = await connection.query(
       `
-      INSERT INTO users (email, password) VALUES(?,?)
+      INSERT INTO users (email, password, username) VALUES(?,?,?)
       `,
-      [email, passwordHash]
+      [email, passwordHash, username]
     );
 
     //Devolver la id
