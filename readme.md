@@ -23,7 +23,7 @@
 
 - **POST /user** Registro de usuario ✅
 - **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos
-- **POST /login** Acceso usuario (devuelve token)
+- **POST /login** Acceso usuario (devuelve token)✅
 - **POST /** Crear un post (necesita header con token)
 - **GET /** Ver todos los posts (con imágenes con texto o sin él) || FOLLOWS
 - **GET /image/:id** Devuelve un post con una imagen

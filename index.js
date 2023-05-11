@@ -12,7 +12,7 @@ const {
 } = require('./controllers/users');
 // Controllers de IMAGES
 const {
-  getImageController,
+  getImagesController,
   newImageController,
   getSingleImageController,
   deleteImageController,
@@ -26,6 +26,7 @@ const app = express();
 app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use('/uploads', express.static('./uploads'));
 
 //Rutas para cada ENDPOINT
 
@@ -36,9 +37,9 @@ app.post('/login', loginController);
 
 //Rutas de Posts
 app.post('/', authUser, newImageController);
-app.get('/', getImageController);
+app.get('/', getImagesController);
 app.get('/image/:id', getSingleImageController);
-app.delete('/image/:id', deleteImageController);
+app.delete('/image/:id', authUser, deleteImageController);
 
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {

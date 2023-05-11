@@ -12,7 +12,11 @@ const authUser = (req, res, next) => {
 
     try {
       token = jwt.verify(authorization, process.env.SECRET);
-    } catch {}
+    } catch {
+      throw generateError('Token incorrecto', 401);
+    }
+
+    req.userId = token.id;
 
     next();
   } catch (error) {

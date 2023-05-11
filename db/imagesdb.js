@@ -1,6 +1,5 @@
 const { generateError } = require('../helpers');
 const { getConnection } = require('./db');
-const bcrypt = require('bcryptjs');
 
 // Devuelve la informacion pública de un usuario con todas sus fotos por medio de su Id
 const getUserImagesById = async (id) => {
@@ -26,7 +25,42 @@ const getUserImagesById = async (id) => {
   }
 };
 
-const createPost = async (userId, text, image = '') => {
+const getImageById = async (id) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+      SELECT * FROM posts WHERE id=?
+    `,
+      [id]
+    );
+
+    if (result.length === 0) {
+      throw generateError(`La imagén con id ${id} no existe`, 404);
+    }
+
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+const getAllImages = async () => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(`
+      SELECT * FROM posts ORDER BY created_at DESC
+    `);
+
+    return result;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+const createPost = async (userId, image, text = '') => {
   let connection;
 
   try {
@@ -34,9 +68,9 @@ const createPost = async (userId, text, image = '') => {
 
     const [result] = await connection.query(
       `
-        INSERT INTO posts (user_id, text_post, image_post) VALUES ( ?, ?, ?)
+        INSERT INTO posts (user_id, post_image, post_text) VALUES ( ?, ?, ?)
         `,
-      [userId, text, image]
+      [userId, image, text]
     );
 
     return result.insertId;
@@ -45,7 +79,32 @@ const createPost = async (userId, text, image = '') => {
   }
 };
 
+const deleteImageById = async (id) => {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      DELETE FROM posts WHERE id=?
+    `,
+      [id]
+    );
+
+    if (result.length === 0) {
+      throw generateError(`La imagén con id ${id} no existe`, 404);
+    }
+
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
   getUserImagesById,
   createPost,
+  getAllImages,
+  getImageById,
+  deleteImageById,
 };
