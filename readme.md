@@ -38,8 +38,3 @@ imagen/1/user/5/porelculotelahinco
 imagen/1/user/6/null
 
 GET imagen/1/like/3 -->
-
-# DUDAS para SAMU aka Patata-Lover
-
-- El path del config para el .env
-- Revisar GET/POST images

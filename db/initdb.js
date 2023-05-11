@@ -50,11 +50,11 @@ async function main() {
 
     await connection.query(`
     CREATE TABLE likes (
+      id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         user_id INTEGER UNSIGNED,
         post_id INTEGER UNSIGNED,
-        PRIMARY KEY(user_id,post_id),
-        CONSTRAINT user_id_likes FOREIGN KEY (user_id) REFERENCES users(id),
-        CONSTRAINT post_id_likes FOREIGN KEY (post_id) REFERENCES posts(id),
+        CONSTRAINT user_id_likes FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        CONSTRAINT post_id_likes FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     `);
