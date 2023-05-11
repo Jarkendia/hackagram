@@ -1,14 +1,15 @@
 const { generateError } = require('../helpers');
 const { getConnection } = require('./db');
 
-const getCommentFromUserById = async (id) => {
+// Muestra los comentarios que se han hecho en una publicación
+const getCommentsFromPostById = async (id) => {
   let connection;
 
   try {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-        SELECT comment FROM comments WHERE user_id = ?
+        SELECT comment FROM comments WHERE post_id = ?
         `,
       [id]
     );
@@ -22,6 +23,29 @@ const getCommentFromUserById = async (id) => {
   }
 };
 
+// Añade comentarios a una publicación por la id del post
+const createCommentFromPostById = async (comment, user_id, post_id) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+          INSERT INTO comments (comment, user_id, post_id) VALUES (?,?,?)
+          `,
+      [comment, user_id, post_id]
+    );
+
+    if (result.length === 0) {
+      throw generateError('No hay ningún comentario con esa Id', 401);
+    }
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
-  getCommentFromUserById,
+  getCommentsFromPostById,
+  createCommentFromPostById,
 };

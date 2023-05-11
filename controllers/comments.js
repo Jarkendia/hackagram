@@ -1,4 +1,19 @@
 const bcrypt = require('bcrypt');
-const getCommentFromUserById = require('../db/commentsdb');
+const joi = require('joi');
+const {
+  getCommentsFromPostById,
+  createCommentFromPostById,
+} = require('../db/commentsdb');
 
-const newCommentFromUserById = async (req, res) => {};
+const newCommentInPostById = async (req, res) => {
+  // Tengo que usar la función createCommentFromPostById
+};
+
+const showCommentFromPostById = async (req, res) => {
+  // Tengo que usar la función getCommentFromUserById
+};
+
+module.exports = {
+  newCommentInPostById,
+  showCommentFromPostById,
+};

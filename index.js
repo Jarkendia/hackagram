@@ -17,6 +17,11 @@ const {
   getSingleImageController,
   deleteImageController,
 } = require('./controllers/images');
+// Controllers de COMMENTS
+const {
+  newCommentInPostById,
+  showCommentFromPostById,
+} = require('./controllers/comments');
 
 const { authUser } = require('./middlewares/auth');
 
@@ -40,6 +45,10 @@ app.post('/', authUser, newImageController);
 app.get('/', getImagesController);
 app.get('/image/:id', getSingleImageController);
 app.delete('/image/:id', authUser, deleteImageController);
+
+//Rutas de comentarios
+app.post('/image/:id/', newCommentInPostById);
+app.get('/image/:id/', showCommentFromPostById);
 
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {
