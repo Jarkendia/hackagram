@@ -7,12 +7,11 @@ const { createPathIfNotExists, generateError } = require('../helpers');
 const {
   createPost,
   getAllImages,
-  getImageById,
+  getImagesByText,
   deleteImageById,
-  getNameFromImageById,
 } = require('../db/imagesdb');
 
-const getImagesController = async (req, res, next) => {
+const getAllImagesController = async (req, res, next) => {
   try {
     const images = await getAllImages();
 
@@ -64,11 +63,11 @@ const newImageController = async (req, res, next) => {
   }
 };
 
-const getSingleImageController = async (req, res, next) => {
+const getImagesController = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { post_text } = req.params;
     // REVISAR
-    const image = await getImageById(id);
+    const image = await getImagesByText(post_text);
 
     res.send({
       status: 'Ok',
@@ -83,7 +82,7 @@ const deleteImageController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const image = await getImageById(id);
+    const image = await getImagesByText(id);
 
     console.log(image);
 
@@ -107,8 +106,8 @@ const deleteImageController = async (req, res, next) => {
 };
 
 module.exports = {
-  getImagesController,
+  getAllImagesController,
   newImageController,
-  getSingleImageController,
+  getImagesController,
   deleteImageController,
 };

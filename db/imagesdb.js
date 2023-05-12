@@ -25,43 +25,25 @@ const getUserImagesById = async (id) => {
   }
 };
 
-const getImageById = async (id) => {
+const getImagesByText = async (text) => {
   let connection;
   try {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-      SELECT * FROM posts WHERE id=?
+      SELECT post_image FROM posts WHERE post_text LIKE ?
     `,
-      [id]
+      [`%${text}%`]
     );
 
     if (result.length === 0) {
-      throw generateError(`La imagén con id ${id} no existe`, 404);
+      throw generateError(
+        `La imagen con el texto descriptivo ${text} no existe`,
+        404
+      );
     }
 
-    return result[0];
-  } finally {
-    if (connection) connection.release();
-  }
-};
-
-const getNameFromImageById = async (id) => {
-  let connection;
-  try {
-    connection = await getConnection();
-    const [result] = await connection.query(
-      `
-      SELECT post_image FROM posts WHERE id=?
-    `,
-      [id]
-    );
-
-    if (result.length === 0) {
-      throw generateError(`La imagen con id ${id} no existe`, 404);
-    }
-
-    return result[0];
+    return result;
   } finally {
     if (connection) connection.release();
   }
@@ -126,7 +108,6 @@ module.exports = {
   getUserImagesById,
   createPost,
   getAllImages,
-  getImageById,
+  getImagesByText,
   deleteImageById,
-  getNameFromImageById,
 };

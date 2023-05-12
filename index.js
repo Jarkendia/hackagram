@@ -12,9 +12,9 @@ const {
 } = require('./controllers/users');
 // Controllers de IMAGES
 const {
-  getImagesController,
+  getAllImagesController,
   newImageController,
-  getSingleImageController,
+  getImagesController,
   deleteImageController,
 } = require('./controllers/images');
 // Controllers de COMMENTS
@@ -42,8 +42,8 @@ app.post('/login', loginController);
 
 //Rutas de Posts
 app.post('/', authUser, newImageController);
-app.get('/', getImagesController);
-app.get('/image/:id', getSingleImageController);
+app.get('/', getAllImagesController);
+app.get('/image/:post_text', getImagesController);
 app.delete('/image/:id', authUser, deleteImageController);
 
 //Rutas de comentarios
