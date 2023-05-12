@@ -49,6 +49,36 @@ const getUserById = async (id) => {
   }
 };
 
+//Seleccionar todas las imagenes de un usuario
+const getImagesByUser = async (username) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      SELECT p.post_image, u.username
+      FROM posts p
+      LEFT JOIN users u ON p.user_id = u.id
+      WHERE u.username = ?
+    `,
+      [username]
+    );
+    // SELECT i.image_url, u.username
+    // FROM images AS i
+    // LEFT JOIN users AS u ON i.user_id = u.id
+    // WHERE u.username = ?
+    if (result.length === 0) {
+      throw generateError('No hay ningún usuario con ese nombre', 404);
+    }
+
+    return result;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Crea un usuario en la base de datos  y devuelve su id
 const createUser = async (email, password, username) => {
   let connection;
@@ -86,4 +116,5 @@ module.exports = {
   createUser,
   getUserById,
   getUserByEmail,
+  getImagesByUser,
 };

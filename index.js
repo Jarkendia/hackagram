@@ -37,7 +37,7 @@ app.use('/uploads', express.static('./uploads'));
 
 //Rutas de usuario
 app.post('/user', newUserController);
-app.get('/user/:id', getUserController);
+app.get('/user/:username', getUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts

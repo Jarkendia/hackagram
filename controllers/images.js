@@ -9,6 +9,7 @@ const {
   getAllImages,
   getImagesByText,
   deleteImageById,
+  getImageById,
 } = require('../db/imagesdb');
 
 const getAllImagesController = async (req, res, next) => {
@@ -82,7 +83,7 @@ const deleteImageController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const image = await getImagesByText(id);
+    const image = await getImageById(id);
 
     console.log(image);
 

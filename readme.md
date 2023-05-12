@@ -22,7 +22,7 @@
 # ENDPOINTS
 
 - **POST /user** Registro de usuario ✅
-- **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos
+- **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos✅
 - **POST /login** Acceso usuario (devuelve token)✅
 - **POST /** Crear un post (necesita header con token) ✅
 - **GET /** Ver todos los posts (con imágenes con texto o sin él) ✅
@@ -38,3 +38,9 @@ imagen/1/user/5/porelculotelahinco
 imagen/1/user/6/null
 
 GET imagen/1/like/3 -->
+
+# COSAS A REVISAR
+
+revisar codigos de error, status
+añadir comentarios a cada funcion para que nos quede claro
+añadir un joi para que la imagen sea obligatoria

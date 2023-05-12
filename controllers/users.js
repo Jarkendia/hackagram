@@ -1,7 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateError } = require('../helpers');
-const { createUser, getUserById, getUserByEmail } = require('../db/usersdb');
+const {
+  createUser,
+  getUserById,
+  getUserByEmail,
+  getImagesByUser,
+} = require('../db/usersdb');
 const Joi = require('joi');
 
 const newUserController = async (req, res, next) => {
@@ -35,9 +40,9 @@ const newUserController = async (req, res, next) => {
 };
 const getUserController = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { username } = req.params;
 
-    const user = await getUserById(id);
+    const user = await getImagesByUser(username);
 
     res.send({
       status: 'ok',

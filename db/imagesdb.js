@@ -49,6 +49,27 @@ const getImagesByText = async (text) => {
   }
 };
 
+const getImageById = async (id) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+      SELECT * FROM posts WHERE id = ?
+    `,
+      [id]
+    );
+
+    if (result.length === 0) {
+      throw generateError(`La imagen con la id ${id} no existe`, 404);
+    }
+
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 const getAllImages = async () => {
   let connection;
   try {
@@ -110,4 +131,5 @@ module.exports = {
   getAllImages,
   getImagesByText,
   deleteImageById,
+  getImageById,
 };
