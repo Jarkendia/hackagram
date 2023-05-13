@@ -24,6 +24,7 @@ const {
 } = require('./controllers/comments');
 
 const { authUser } = require('./middlewares/auth');
+const { postLikeImageController } = require('./controllers/likes');
 
 const app = express();
 
@@ -45,6 +46,9 @@ app.post('/', authUser, newImageController);
 app.get('/', getAllImagesController);
 app.get('/image/:post_text', getImagesController);
 app.delete('/image/:id', authUser, deleteImageController);
+
+//Ruta de like
+app.post('/image/:imageId/like', authUser, postLikeImageController);
 
 //Rutas de comentarios
 app.post('/image/:id/', newCommentInPostById);

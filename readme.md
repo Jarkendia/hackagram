@@ -22,25 +22,19 @@
 # ENDPOINTS
 
 - **POST /user** Registro de usuario ✅
-- **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos✅
-- **POST /login** Acceso usuario (devuelve token)✅
+- **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos ✅
+- **POST /login** Acceso usuario (devuelve token) ✅
 - **POST /** Crear un post (necesita header con token) ✅
 - **GET /** Ver todos los posts (con imágenes con texto o sin él) ✅
 - **GET /image/:id** Devuelve un post con una imagen ✅
 - **DELETE /image/:id** Borra una imagen (sólo quién la subió) ✅
-- **GET /image/:id/like/:sum** Muestra cuántos likes tiene una foto
-
-<!-- imagen/1/user/1/like
-imagen/1/user/2/null
-imagen/1/user/3/like
-imagen/1/user/4/like
-imagen/1/user/5/porelculotelahinco
-imagen/1/user/6/null
-
-GET imagen/1/like/3 -->
+- **POST /image/:imageId/like** Hacer/quitar un like a una foto ✅
+- **POST /user/:id/settings** Gestión del perfil (cambios en los datos de registro)
+- **POST /image/:id/comment** Comentar una foto (no se permiten comentarios a comentarios)
 
 # COSAS A REVISAR
 
 revisar codigos de error, status
 añadir comentarios a cada funcion para que nos quede claro
-añadir un joi para que la imagen sea obligatoria
+añadir un Joi para que la imagen sea obligatoria
+Habria que añadir un avatar a cada usuario
