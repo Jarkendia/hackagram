@@ -2,12 +2,12 @@ const { generateError } = require('../helpers');
 const { getConnection } = require('./db');
 
 // Devuelve la informacion pública de un usuario con todas sus fotos por medio de su Id
-const getUserImagesById = async (id) => {
+const getUserPostsById = async (id) => {
   let connection;
 
   try {
     connection = await getConnection();
-    // REVISAR
+
     const [result] = await connection.query(
       `
       SELECT username, post_image FROM users LEFT JOIN posts on users.id = user_id.posts WHERE id = ?
@@ -25,7 +25,7 @@ const getUserImagesById = async (id) => {
   }
 };
 
-const getImagesByText = async (text) => {
+const getPostsByText = async (text) => {
   let connection;
   try {
     connection = await getConnection();
@@ -49,7 +49,7 @@ const getImagesByText = async (text) => {
   }
 };
 
-const getImageById = async (id) => {
+const getPostById = async (id) => {
   let connection;
   try {
     connection = await getConnection();
@@ -70,7 +70,7 @@ const getImageById = async (id) => {
   }
 };
 
-const getAllImages = async () => {
+const getAllPosts = async () => {
   let connection;
   try {
     connection = await getConnection();
@@ -103,7 +103,7 @@ const createPost = async (userId, image, text = '') => {
   }
 };
 
-const deleteImageById = async (id) => {
+const deletePostById = async (id) => {
   let connection;
   try {
     connection = await getConnection();
@@ -126,10 +126,10 @@ const deleteImageById = async (id) => {
 };
 
 module.exports = {
-  getUserImagesById,
+  getUserPostsById,
   createPost,
-  getAllImages,
-  getImagesByText,
-  deleteImageById,
-  getImageById,
+  getAllPosts,
+  getPostsByText,
+  deletePostById,
+  getPostById,
 };

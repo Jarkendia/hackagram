@@ -10,21 +10,23 @@ const {
   getUserController,
   loginController,
 } = require('./controllers/users');
-// Controllers de IMAGES
+// Controllers de POSTS
 const {
-  getAllImagesController,
-  newImageController,
-  getImagesController,
-  deleteImageController,
-} = require('./controllers/images');
+  getAllPostsController,
+  newPostController,
+  getPostsController,
+  deletePostController,
+} = require('./controllers/posts');
 // Controllers de COMMENTS
 const {
-  newCommentInPostById,
+  newCommentInPostByIdController,
   showCommentFromPostById,
 } = require('./controllers/comments');
 
+// Controller de LIKES
+const { postLikeController } = require('./controllers/likes');
+
 const { authUser } = require('./middlewares/auth');
-const { postLikeImageController } = require('./controllers/likes');
 
 const app = express();
 
@@ -42,16 +44,16 @@ app.get('/user/:username', getUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts
-app.post('/', authUser, newImageController);
-app.get('/', getAllImagesController);
-app.get('/image/:post_text', getImagesController);
-app.delete('/image/:id', authUser, deleteImageController);
+app.post('/', authUser, newPostController);
+app.get('/', getAllPostsController);
+app.get('/image/:post_text', getPostsController);
+app.delete('/image/:id', authUser, deletePostController);
 
 //Ruta de like
-app.post('/image/:imageId/like', authUser, postLikeImageController);
+app.post('/image/:imageId/like', authUser, postLikeController);
 
 //Rutas de comentarios
-app.post('/image/:id/', newCommentInPostById);
+app.post('/image/:id/comment', authUser, newCommentInPostByIdController);
 app.get('/image/:id/', showCommentFromPostById);
 
 // Middleware del error 404 (ruta no encontrada)

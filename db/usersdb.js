@@ -50,7 +50,7 @@ const getUserById = async (id) => {
 };
 
 //Seleccionar todas las imagenes de un usuario
-const getImagesByUser = async (username) => {
+const getPostsByUser = async (username) => {
   let connection;
 
   try {
@@ -65,10 +65,7 @@ const getImagesByUser = async (username) => {
     `,
       [username]
     );
-    // SELECT i.image_url, u.username
-    // FROM images AS i
-    // LEFT JOIN users AS u ON i.user_id = u.id
-    // WHERE u.username = ?
+
     if (result.length === 0) {
       throw generateError('No hay ningún usuario con ese nombre', 404);
     }
@@ -116,5 +113,5 @@ module.exports = {
   createUser,
   getUserById,
   getUserByEmail,
-  getImagesByUser,
+  getPostsByUser,
 };

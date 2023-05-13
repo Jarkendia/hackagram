@@ -6,15 +6,14 @@ const randomstring = require('randomstring');
 const { createPathIfNotExists, generateError } = require('../helpers');
 const {
   createPost,
-  getAllImages,
-  getImagesByText,
-  deleteImageById,
-  getImageById,
-} = require('../db/imagesdb');
+  getAllPosts,
+  getPostsByText,
+  deletePostById,
+} = require('../db/postsdb');
 
-const getAllImagesController = async (req, res, next) => {
+const getAllPostsController = async (req, res, next) => {
   try {
-    const images = await getAllImages();
+    const images = await getAllPosts();
 
     res.send({
       status: 'ok',
@@ -25,16 +24,10 @@ const getAllImagesController = async (req, res, next) => {
   }
 };
 
-const newImageController = async (req, res, next) => {
+//Crear publicación con imagen (y texto opcional)
+const newPostController = async (req, res, next) => {
   try {
-    //CREAR
-
     const { postText } = req.body;
-
-    // if (!postImage) {
-    //   throw generateError('Hay que subir una imagen', 400);
-    // }
-
     let imageFileName;
 
     if (req.files && req.files.postImage) {
@@ -64,11 +57,11 @@ const newImageController = async (req, res, next) => {
   }
 };
 
-const getImagesController = async (req, res, next) => {
+//Buscar fotos (por su texto descriptivo)
+const getPostsController = async (req, res, next) => {
   try {
     const { post_text } = req.params;
-    // REVISAR
-    const image = await getImagesByText(post_text);
+    const image = await getPostsByText(post_text);
 
     res.send({
       status: 'Ok',
@@ -79,11 +72,11 @@ const getImagesController = async (req, res, next) => {
   }
 };
 
-const deleteImageController = async (req, res, next) => {
+const deletePostController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const image = await getImageById(id);
+    const image = await deletePostById(id);
 
     console.log(image);
 
@@ -94,7 +87,7 @@ const deleteImageController = async (req, res, next) => {
       );
     }
 
-    await deleteImageById(id);
+    await deletePostById(id);
     await fs.rm(path.join(__dirname, `../uploads/${image.post_image}`));
 
     res.send({
@@ -107,8 +100,8 @@ const deleteImageController = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllImagesController,
-  newImageController,
-  getImagesController,
-  deleteImageController,
+  getAllPostsController,
+  newPostController,
+  getPostsController,
+  deletePostController,
 };

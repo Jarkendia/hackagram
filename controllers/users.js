@@ -1,12 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateError } = require('../helpers');
-const {
-  createUser,
-  getUserById,
-  getUserByEmail,
-  getImagesByUser,
-} = require('../db/usersdb');
+const { createUser, getUserByEmail, getPostsByUser } = require('../db/usersdb');
 const Joi = require('joi');
 
 const newUserController = async (req, res, next) => {
@@ -42,7 +37,7 @@ const getUserController = async (req, res, next) => {
   try {
     const { username } = req.params;
 
-    const user = await getImagesByUser(username);
+    const user = await getPostsByUser(username);
 
     res.send({
       status: 'ok',
