@@ -15,15 +15,14 @@ const newCommentInPostByIdController = async (req, res, next) => {
     const commentsPost = await createCommentFromPostById(
       comment,
       userId,
-      postId
+      postId.id
     );
 
     // const image = await getImagesByText(post_text);
 
     res.send({
       status: 'Ok',
-      message: commentsPost,
-      postId,
+      message: `El comentario ${comment} se registro correctamente en el post con la id ${postId.id}`,
     });
   } catch (error) {
     next(error);
