@@ -7,7 +7,7 @@ const imageUpload = require('express-fileupload');
 // Controllers de USERS
 const {
   newUserController,
-  getUserController,
+  getPostsByUserController,
   loginController,
 } = require('./controllers/users');
 // Controllers de POSTS
@@ -20,7 +20,7 @@ const {
 // Controllers de COMMENTS
 const {
   newCommentInPostByIdController,
-  showCommentFromPostById,
+  // showCommentFromPostById,
 } = require('./controllers/comments');
 
 // Controller de LIKES
@@ -40,7 +40,7 @@ app.use('/uploads', express.static('./uploads'));
 
 //Rutas de usuario
 app.post('/user', newUserController);
-app.get('/user/:username', getUserController);
+app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts
@@ -54,7 +54,7 @@ app.post('/image/:imageId/like', authUser, postLikeController);
 
 //Rutas de comentarios
 app.post('/image/:id/comment', authUser, newCommentInPostByIdController);
-app.get('/image/:id/', showCommentFromPostById);
+// app.get('/image/:id/', showCommentFromPostById);
 
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {

@@ -1,35 +1,40 @@
-const bcrypt = require('bcrypt');
-const joi = require('joi');
 const { getPostById } = require('../db/postsdb');
 const {
-  getCommentsFromPostById,
+  // getCommentsFromPostById,
   createCommentFromPostById,
 } = require('../db/commentsdb');
 
-const newCommentInPostByIdController = async (req, res) => {
+const newCommentInPostByIdController = async (req, res, next) => {
   // Tengo que usar la función createCommentFromPostById
   try {
     const { id } = req.params;
-    const { post_id } = req;
+    const { userId } = req;
+    const { comment } = req.body;
 
-    const imageId = await getPostById(id);
+    const postId = await getPostById(id);
+    const commentsPost = await createCommentFromPostById(
+      comment,
+      userId,
+      postId
+    );
 
     // const image = await getImagesByText(post_text);
 
     res.send({
       status: 'Ok',
-      message: imageId,
+      message: commentsPost,
+      postId,
     });
   } catch (error) {
     next(error);
   }
 };
 
-const showCommentFromPostById = async (req, res) => {
-  // Tengo que usar la función getCommentFromUserById
-};
+// const showCommentFromPostById = async (req, res) => {
+//   // Tengo que usar la función getCommentFromUserById
+// };
 
 module.exports = {
   newCommentInPostByIdController,
-  showCommentFromPostById,
+  // showCommentFromPostById,
 };

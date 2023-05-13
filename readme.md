@@ -38,3 +38,4 @@ revisar codigos de error, status
 añadir comentarios a cada funcion para que nos quede claro
 añadir un Joi para que la imagen sea obligatoria
 Habria que añadir un avatar a cada usuario
+Si no hay ningun post creado da el error "message": "No hay ningún usuario con ese nombre"

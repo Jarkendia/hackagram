@@ -33,7 +33,7 @@ const newUserController = async (req, res, next) => {
     next(error);
   }
 };
-const getUserController = async (req, res, next) => {
+const getPostsByUserController = async (req, res, next) => {
   try {
     const { username } = req.params;
 
@@ -94,6 +94,6 @@ const loginController = async (req, res, next) => {
 
 module.exports = {
   newUserController,
-  getUserController,
   loginController,
+  getPostsByUserController,
 };

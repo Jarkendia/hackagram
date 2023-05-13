@@ -2,29 +2,29 @@ const { generateError } = require('../helpers');
 const { getConnection } = require('./db');
 
 // Muestra los comentarios que se han hecho en una publicación
-const getCommentsFromPostById = async (id) => {
-  let connection;
+// const getCommentsFromPostById = async (id) => {
+//   let connection;
 
-  try {
-    connection = await getConnection();
-    const [result] = await connection.query(
-      `
-        SELECT comment FROM comments WHERE post_id = ?
-        `,
-      [id]
-    );
+//   try {
+//     connection = await getConnection();
+//     const [result] = await connection.query(
+//       `
+//         SELECT comment FROM comments WHERE post_id = ?
+//         `,
+//       [id]
+//     );
 
-    if (result.length === 0) {
-      throw generateError('No hay ningún comentario con esa Id', 401);
-    }
-    return result[0];
-  } finally {
-    if (connection) connection.release();
-  }
-};
+//     if (result.length === 0) {
+//       throw generateError('No hay ningún comentario con esa Id', 401);
+//     }
+//     return result[0];
+//   } finally {
+//     if (connection) connection.release();
+//   }
+// };
 
 // Añade comentarios a una publicación por la id del post
-const createCommentFromPostById = async (comment, user_id, post_id) => {
+const createCommentFromPostById = async (comment, userId, postId) => {
   let connection;
 
   try {
@@ -33,11 +33,11 @@ const createCommentFromPostById = async (comment, user_id, post_id) => {
       `
           INSERT INTO comments (comment, user_id, post_id) VALUES (?,?,?)
           `,
-      [comment, user_id, post_id]
+      [comment, userId, postId]
     );
 
     if (result.length === 0) {
-      throw generateError('No hay ningún comentario con esa Id', 401);
+      throw generateError('Esa imagen no existe', 404);
     }
     return result[0];
   } finally {
@@ -46,6 +46,6 @@ const createCommentFromPostById = async (comment, user_id, post_id) => {
 };
 
 module.exports = {
-  getCommentsFromPostById,
+  // getCommentsFromPostById,
   createCommentFromPostById,
 };
