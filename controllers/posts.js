@@ -2,6 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 const sharp = require('sharp');
 const randomstring = require('randomstring');
+const Joi = require('joi');
 
 const { createPathIfNotExists, generateError } = require('../helpers');
 const {
@@ -9,6 +10,7 @@ const {
   getAllPosts,
   getPostsByText,
   deletePostById,
+  getPostById,
 } = require('../db/postsdb');
 
 const getAllPostsController = async (req, res, next) => {
@@ -29,6 +31,20 @@ const newPostController = async (req, res, next) => {
   try {
     const { postText } = req.body;
     let imageFileName;
+
+    const schema = Joi.object({
+      postText: Joi.string().max(500),
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).send({
+        status: 'error',
+        message: 'Invalid data',
+        error: error.details[0].message,
+      });
+    }
 
     if (req.files && req.files.postImage) {
       const uploadsDir = path.join(__dirname, '../uploads');
@@ -76,7 +92,7 @@ const deletePostController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const image = await deletePostById(id);
+    const image = await getPostById(id);
 
     console.log(image);
 

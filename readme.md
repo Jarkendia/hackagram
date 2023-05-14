@@ -22,20 +22,22 @@
 # ENDPOINTS
 
 - **POST /user** Registro de usuario ✅
-- **GET /user/:id** Muestra el perfil del usuario con sus datos y todas sus fotos ✅
+- **GET /user/:username** Muestra el perfil del usuario con sus datos y todas sus fotos ✅
 - **POST /login** Acceso usuario (devuelve token) ✅
 - **POST /** Crear un post (necesita header con token) ✅
 - **GET /** Ver todos los posts (con imágenes con texto o sin él) ✅
-- **GET /image/:id** Devuelve un post con una imagen ✅
+- **GET /image/:postText** Devuelve todos los posts que coincidan por su texto descriptivo✅
 - **DELETE /image/:id** Borra una imagen (sólo quién la subió) ✅
 - **POST /image/:imageId/like** Hacer/quitar un like a una foto ✅
-- **POST /user/:id/settings** Gestión del perfil (cambios en los datos de registro)
-- **POST /image/:id/comment** Comentar una foto (no se permiten comentarios a comentarios)
+- **PUT /settings** Gestión del perfil (cambios en los datos de registro)
+- **POST /image/:id/comment** Comentar una foto (no se permiten comentarios a comentarios)✅
 
 # COSAS A REVISAR
 
-revisar codigos de error, status
-añadir comentarios a cada funcion para que nos quede claro
-añadir un Joi para que la imagen sea obligatoria
-Habria que añadir un avatar a cada usuario
-Si no hay ningun post creado da el error "message": "No hay ningún usuario con ese nombre"
+- revisar codigos de error, status
+- añadir comentarios a cada funcion para que nos quede claro
+- añadir un Joi para que la imagen sea obligatoria
+- Añadir un avatar a cada usuario
+- Si no hay ningun post creado da el error "message": "No hay ningún usuario con ese nombre"
+- Añadir a las imagenes los likes y los comments en los endspoints necesarios
+- Preguntar a Samu como se comparte la coleccion en Postman
