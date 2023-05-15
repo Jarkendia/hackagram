@@ -58,16 +58,21 @@ const getPostsByUser = async (username) => {
 
     const [result] = await connection.query(
       `
-      SELECT p.post_image, u.username
-      FROM posts p
-      LEFT JOIN users u ON p.user_id = u.id
-      WHERE u.username = ?
+      SELECT username Nombre, post_image Imagen, post_text Descripción, comment Comentario, likes.user_id Likes, posts.created_at Creado FROM posts
+      LEFT JOIN users ON users.id = posts.user_id
+      LEFT JOIN likes ON posts.id = likes.post_id 
+      LEFT JOIN comments ON comments.post_id = posts.id
+      WHERE username = ?
+      ORDER BY posts.created_at DESC
     `,
       [username]
     );
 
     if (result.length === 0) {
-      throw generateError('No hay ningún usuario con ese nombre', 404);
+      throw generateError(
+        'No hay ningún usuario con ese nombre o dicho usuario no ha publicado nada',
+        404
+      );
     }
 
     return result;

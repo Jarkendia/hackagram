@@ -1,11 +1,7 @@
 const { getPostById } = require('../db/postsdb');
-const {
-  // getCommentsFromPostById,
-  createCommentFromPostById,
-} = require('../db/commentsdb');
+const { createCommentFromPostById } = require('../db/commentsdb');
 
 const newCommentInPostByIdController = async (req, res, next) => {
-  // Tengo que usar la función createCommentFromPostById
   try {
     const { id } = req.params;
     const { userId } = req;
@@ -18,8 +14,6 @@ const newCommentInPostByIdController = async (req, res, next) => {
       postId.id
     );
 
-    // const image = await getImagesByText(post_text);
-
     res.send({
       status: 'Ok',
       message: `El comentario ${comment} se registro correctamente en el post con la id ${postId.id}`,
@@ -29,11 +23,6 @@ const newCommentInPostByIdController = async (req, res, next) => {
   }
 };
 
-// const showCommentFromPostById = async (req, res) => {
-//   // Tengo que usar la función getCommentFromUserById
-// };
-
 module.exports = {
   newCommentInPostByIdController,
-  // showCommentFromPostById,
 };

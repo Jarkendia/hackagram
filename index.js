@@ -4,12 +4,15 @@ const port = 4000;
 const express = require('express');
 const morgan = require('morgan');
 const imageUpload = require('express-fileupload');
+const { authUser } = require('./middlewares/auth');
+
 // Controllers de USERS
 const {
   newUserController,
   getPostsByUserController,
   loginController,
 } = require('./controllers/users');
+
 // Controllers de POSTS
 const {
   getAllPostsController,
@@ -17,28 +20,23 @@ const {
   getPostsController,
   deletePostController,
 } = require('./controllers/posts');
+
 // Controllers de COMMENTS
-const {
-  newCommentInPostByIdController,
-  // showCommentFromPostById,
-} = require('./controllers/comments');
+const { newCommentInPostByIdController } = require('./controllers/comments');
 
 // Controller de LIKES
 const { postLikeController } = require('./controllers/likes');
 
-const { authUser } = require('./middlewares/auth');
+// Controller de SETTINGS
 const { changeUsername } = require('./controllers/settings');
 
 const app = express();
-
-// | INFO de desarrollo
 app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/uploads', express.static('./uploads'));
 
 //Rutas para cada ENDPOINT
-
 //Rutas de usuario
 app.post('/user', newUserController);
 app.get('/user/:username', getPostsByUserController);
@@ -53,9 +51,10 @@ app.delete('/image/:id', authUser, deletePostController);
 //Ruta de like
 app.post('/image/:imageId/like', authUser, postLikeController);
 
-//Rutas de comentarios
+//Ruta de comentarios
 app.post('/image/:id/comment', authUser, newCommentInPostByIdController);
 
+//Rutas de settings
 app.put('/settings', authUser, changeUsername);
 
 // Middleware del error 404 (ruta no encontrada)
