@@ -23,6 +23,25 @@ const createCommentFromPostById = async (comment, userId, postId) => {
   }
 };
 
+const selectCommentsFromPostById = async (postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+          SELECT id, comment, user_id, created_at FROM comments WHERE post_id = ?
+          `,
+      [postId]
+    );
+
+    return result;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
   createCommentFromPostById,
+  selectCommentsFromPostById,
 };

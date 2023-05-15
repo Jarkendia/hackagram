@@ -28,7 +28,8 @@
 > Ruta pública: http://localhost:4000/
 
 - **POST /user** Registro de usuario ✅
-- **GET /user/:username** Muestra el perfil del usuario con sus datos y todas sus fotos ✅
+- **GET /user/:id** Muestra el perfil del usuario (por su Id) con sus datos y todas sus fotos ✅
+- **GET /user/:username** Muestra el perfil del usuario (por su username) con sus datos y todas sus fotos ✅
 - **POST /login** Acceso usuario (devuelve token) ✅
 - **POST /** Crear un post (necesita header con token) ✅
 - **GET /** Ver todos los posts (con imágenes con texto o sin él) ✅
@@ -38,12 +39,6 @@
 - **POST /image/:imageId/like** Hacer/quitar un like a una foto ✅
 - **POST /image/:id/comment** Comentar una foto (no se permiten comentarios a comentarios) ✅
 - **PUT /settings** Gestión del perfil (cambios en los datos de registro) ✅
-
-# COSAS A REVISAR
-
-- Si no hay ningun post creado da el error "message": "No hay ningún usuario con ese nombre"
-- Preguntar a Samu como se comparte la coleccion en Postman y cómo añadir un Joi para que la imagen sea obligatoria
-- Gestionar mensaje de error cuando se repite usuario (en SQL sí que lo gestiona)
 
 # MÓDULOS INSTALADOS
 

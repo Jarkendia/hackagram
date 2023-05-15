@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "cdd66ca1-4593-4e98-ad6d-f1ae962800d6",
+		"name": "Proyecto Hackagram",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27138436",
+		"_collection_link": "https://crimson-crescent-415754.postman.co/workspace/Team-Patata~e42d8256-d73d-4e89-856c-440da70421bd/collection/27138436-cdd66ca1-4593-4e98-ad6d-f1ae962800d6?action=share&creator=27138436&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "POST de login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0MTQyNjA5LCJleHAiOjE2ODY3MzQ2MDl9.4qnf4Tp1GlLdcxTkBVeVdCv9Nq4FQiiBZ_OITQgDlKM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"asdf@asdf.com\",\n    \"password\": \"asdf\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST de USER (registro)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"asdf7\",\n    \"email\": \"asdf7@asdf.com\",\n    \"password\": \"asdf67\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET de USER (lista de posts)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/user/asdf5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"asdf5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET de IMAGEN (con texto descriptivo)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/image/:text",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"image",
+						":text"
+					],
+					"variable": [
+						{
+							"key": "text",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET de IMAGEN (visualmente)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/uploads/I7qBZYQ.jpg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"uploads",
+						"I7qBZYQ.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE de IMAGEN",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjgzODE1NzMzLCJleHAiOjE2ODY0MDc3MzN9.bj9CoVKMi7kvyGunJhjZ-e-2eHydL8UNYOVoJR8z9rs",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/image/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"image",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST de IMAGEN (con texto descriptivo)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjg0MTM5MDg1LCJleHAiOjE2ODY3MzEwODV9.nGl4VYWSUGeL-EYM7z_iEdLMbOkImzCUdID49J_4oko",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "postImage",
+							"type": "file",
+							"src": "/home/jarkendia/Hack a Boss/Hackagram/public/photos/imagen2.jpg"
+						},
+						{
+							"key": "postText",
+							"value": "imagen2 del user2 HABER",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "patata",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "pimiento",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET de PORTADA",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjgzODE1NzMzLCJleHAiOjE2ODY0MDc3MzN9.bj9CoVKMi7kvyGunJhjZ-e-2eHydL8UNYOVoJR8z9rs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "postImage",
+							"type": "file",
+							"src": "/home/jarkendia/Hack a Boss/Hackagram/public/photos/52e2dd4a4850ab14f1dc8460962e33791c3ad6e04e5074417c2f7dd49e48c7_640.jpg"
+						},
+						{
+							"key": "postText",
+							"value": "Comida asdfsdfasdf",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST de LIKE",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjgzOTk0ODU4LCJleHAiOjE2ODY1ODY4NTh9.chtA9LX8_cxp8rJjA6DVDzK69VLYyQftCPYefthJU10",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:4000/image/15/like",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"image",
+						"15",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST de COMMENT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0MTQxMjQ3LCJleHAiOjE2ODY3MzMyNDd9.bFBIC17Rcon7wdxTP3tr4vsm-tq35fL5Ay5xJNxW4R4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"Pimiento\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/image/15/comment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"image",
+						"15",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT de Settings",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0MTQyNjA5LCJleHAiOjE2ODY3MzQ2MDl9.4qnf4Tp1GlLdcxTkBVeVdCv9Nq4FQiiBZ_OITQgDlKM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"newUsername\": \"Chute\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/settings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"settings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

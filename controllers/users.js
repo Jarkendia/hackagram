@@ -1,8 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { generateError } = require('../helpers');
-const { createUser, getUserByEmail, getPostsByUser } = require('../db/usersdb');
+const {
+  createUser,
+  getUserByEmail,
+  getPostsByUser,
+  getPostsByUserId,
+} = require('../db/usersdb');
+const { selectCommentsFromPostById } = require('../db/commentsdb');
 const Joi = require('joi');
+const { getAllPosts } = require('../db/postsdb');
 
 const newUserController = async (req, res, next) => {
   try {
@@ -38,6 +45,21 @@ const getPostsByUserController = async (req, res, next) => {
     const { username } = req.params;
 
     const user = await getPostsByUser(username);
+
+    res.send({
+      status: 'ok',
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPostsByUserIdController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await getPostsByUserId(id);
 
     res.send({
       status: 'ok',
@@ -96,4 +118,5 @@ module.exports = {
   newUserController,
   loginController,
   getPostsByUserController,
+  getPostsByUserIdController,
 };

@@ -10,6 +10,7 @@ const { authUser } = require('./middlewares/auth');
 const {
   newUserController,
   getPostsByUserController,
+  getPostsByUserIdController,
   loginController,
 } = require('./controllers/users');
 
@@ -39,6 +40,7 @@ app.use('/uploads', express.static('./uploads'));
 //Rutas para cada ENDPOINT
 //Rutas de usuario
 app.post('/user', newUserController);
+app.get('/user/id/:id', getPostsByUserIdController);
 app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
 
