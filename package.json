@@ -4,8 +4,8 @@
   "description": "Clon de Instagram. Proyecto para Hack a Boss.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "initdb": "node db/initdb.js"
+    "dev": "nodemon src/index.js",
+    "initdb": "node src/db/initdb.js"
   },
   "keywords": [],
   "author": "Gonzalo, Marcelo, David y Oscar",
@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.3.0",
+    "nodemailer": "^6.9.2",
     "randomstring": "^1.2.3",
     "sharp": "^0.32.1"
   },

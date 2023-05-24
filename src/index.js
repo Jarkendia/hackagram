@@ -12,13 +12,14 @@ const {
   getPostsByUserController,
   getPostsByUserIdController,
   loginController,
+  getAllUsersController,
 } = require('./controllers/users');
 
 // Controllers de POSTS
 const {
   getAllPostsController,
   newPostController,
-  getPostsController,
+  getPostsByTextController,
   deletePostController,
 } = require('./controllers/posts');
 
@@ -29,35 +30,69 @@ const { newCommentInPostByIdController } = require('./controllers/comments');
 const { postLikeController } = require('./controllers/likes');
 
 // Controller de SETTINGS
-const { changeUsername } = require('./controllers/settings');
+const { changesUserController } = require('./controllers/settings');
+const { verifyEmailController } = require('./controllers/email');
+const { accountVerified } = require('./middlewares/verifyAccount');
+const { userFollowsController } = require('./controllers/follows');
+const {
+  sendMessageController,
+  getMessagesController,
+} = require('./controllers/messages');
+const {
+  newCommentInCommentByCommentIdController,
+} = require('./controllers/commentsToComments');
 
 const app = express();
 app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
-app.use('/uploads', express.static('./uploads'));
+app.use('/uploads', express.static('../uploads'));
+app.use('/avatar', express.static('../uploads/avatars'));
 
 //Rutas para cada ENDPOINT
 //Rutas de usuario
+app.get('/users', getAllUsersController);
 app.post('/user', newUserController);
 app.get('/user/id/:id', getPostsByUserIdController);
 app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
+app.get('/verify/:code', authUser, accountVerified, verifyEmailController);
 
 //Rutas de Posts
-app.post('/', authUser, newPostController);
+app.post('/', authUser, accountVerified, newPostController);
 app.get('/', getAllPostsController);
-app.get('/image/:post_text', getPostsController);
-app.delete('/image/:id', authUser, deletePostController);
+app.get('/image/:post_text', getPostsByTextController);
+app.delete('/image/:id', authUser, accountVerified, deletePostController);
 
 //Ruta de like
-app.post('/image/:imageId/like', authUser, postLikeController);
+app.post('/image/:imageId/like', authUser, accountVerified, postLikeController);
 
 //Ruta de comentarios
-app.post('/image/:id/comment', authUser, newCommentInPostByIdController);
+app.post(
+  '/image/:id/comment',
+  authUser,
+  accountVerified,
+  newCommentInPostByIdController
+);
 
 //Rutas de settings
-app.put('/settings', authUser, changeUsername);
+app.put('/settings', authUser, accountVerified, changesUserController);
+
+//Rutas de follows
+
+app.post('/follow/:id', authUser, accountVerified, userFollowsController);
+
+//Rutas de mensajes.
+app.post('/message/:id', authUser, accountVerified, sendMessageController);
+app.get('/messages/:id', authUser, accountVerified, getMessagesController);
+
+//Rutas de comentarios a comentarios.
+app.post(
+  '/comment/:id',
+  authUser,
+  accountVerified,
+  newCommentInCommentByCommentIdController
+);
 
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {

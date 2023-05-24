@@ -1,6 +1,3 @@
-require('dotenv').config();
-// require('dotenv').config({ path: '/ruta/de/tu/proyecto/.env' });
-
 const mysql = require('mysql2/promise');
 
 const { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE } =

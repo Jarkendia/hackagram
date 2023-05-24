@@ -13,13 +13,23 @@ const {
   getPostById,
 } = require('../db/postsdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
+const {
+  selectCommentsInCommentsByCommentId,
+} = require('../db/commentsToCommentsdb');
 
 const getAllPostsController = async (req, res, next) => {
   try {
     const images = await getAllPosts();
 
     for (const image of images) {
-      image.comments = await selectCommentsFromPostById(image.id);
+      const comments = (image.comment = await selectCommentsFromPostById(
+        image.id
+      ));
+      for (const comment of comments) {
+        comment.comments = await selectCommentsInCommentsByCommentId(
+          comment.id
+        );
+      }
     }
 
     res.send({
@@ -51,13 +61,13 @@ const newPostController = async (req, res, next) => {
       throw generateError('No has seleccionado una imagen', 400);
     }
 
-    const uploadsDir = path.join(__dirname, '../uploads');
+    const uploadsDir = path.join(__dirname, '../../uploads');
 
     await createPathIfNotExists(uploadsDir);
 
     const image = sharp(req.files.postImage.data);
     // Gracias al sharp redimensionamos fácilmente las imágenes
-    await image.resize(300, 200);
+    image.resize(300, 200);
 
     const randomName = randomstring.generate(7) + '.jpg';
     // Generar nombre aleatorio con letras y números con máximo de 7 caracteres
@@ -67,9 +77,11 @@ const newPostController = async (req, res, next) => {
 
     const id = await createPost(req.userId, imageFileName, postText);
 
+    const postCreated = await getPostById(id);
+
     res.send({
       status: 'ok',
-      message: `Imagen ${imageFileName} con id ${id} creada correctamente`,
+      message: postCreated,
     });
   } catch (error) {
     next(error);
@@ -77,7 +89,7 @@ const newPostController = async (req, res, next) => {
 };
 
 //Buscar fotos (por su texto descriptivo)
-const getPostsController = async (req, res, next) => {
+const getPostsByTextController = async (req, res, next) => {
   try {
     const { post_text } = req.params;
     const images = await getPostsByText(post_text);
@@ -121,7 +133,7 @@ const deletePostController = async (req, res, next) => {
 module.exports = {
   getAllPostsController,
   newPostController,
-  getPostsController,
+  getPostsByTextController,
   deletePostController,
   selectCommentsFromPostById,
 };

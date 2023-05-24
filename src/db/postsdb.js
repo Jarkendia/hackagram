@@ -134,6 +134,30 @@ const deletePostById = async (id) => {
   }
 };
 
+const selectPostsByUserId = async (id) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      SELECT p.*, COUNT(l.id) likes 
+      FROM posts p
+      LEFT JOIN likes l ON p.id = l.post_id 
+      WHERE p.user_id = ?
+      GROUP BY p.id
+      ORDER BY p.created_at DESC
+    `,
+      [id]
+    );
+
+    return result;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
   getUserPostsById,
   createPost,
@@ -141,4 +165,5 @@ module.exports = {
   getPostsByText,
   deletePostById,
   getPostById,
+  selectPostsByUserId,
 };

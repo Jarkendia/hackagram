@@ -5,7 +5,10 @@ const authUser = (req, res, next) => {
   try {
     const { authorization } = req.headers;
     if (!authorization) {
-      throw generateError('Falta la cabecera de Authorization', 401);
+      throw generateError(
+        'Debes iniciar sesion. Falta la cabecera de Authorization',
+        401
+      );
     }
 
     let token;

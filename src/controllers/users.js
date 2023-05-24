@@ -1,15 +1,24 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
+const randomstring = require('randomstring');
+
 const { generateError } = require('../helpers');
 const {
   createUser,
   getUserByEmail,
   getPostsByUser,
   getPostsByUserId,
+  getAllUsers,
+  getUserById,
 } = require('../db/usersdb');
-const { selectCommentsFromPostById } = require('../db/commentsdb');
-const Joi = require('joi');
-const { getAllPosts } = require('../db/postsdb');
+const { sendVerificationEmail } = require('../email/email');
+const { selectCommentsFromPostById } = require('./posts');
+const { selectPostsByUserId } = require('../db/postsdb');
+const {
+  getFollowersByUserId,
+  getFollowingsByUserId,
+} = require('../db/followsdb');
 
 const newUserController = async (req, res, next) => {
   try {
@@ -18,6 +27,7 @@ const newUserController = async (req, res, next) => {
     const schema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
+      repeatPassword: Joi.ref('password'),
       username: Joi.string().alphanum().min(3).max(30).required(),
     });
 
@@ -30,25 +40,39 @@ const newUserController = async (req, res, next) => {
         error: error.details[0].message,
       });
     }
-    const id = await createUser(email, password, username);
+
+    const verificationCode = randomstring.generate(12);
+
+    const id = await createUser(email, password, username, verificationCode);
+
+    const verificationLink = `https://localhost:4000/verify/${verificationCode}`;
+
+    await sendVerificationEmail(email, verificationLink);
+
+    const userCreated = await getUserById(id);
 
     res.send({
       status: 'ok',
-      message: `Perfil de ${username} creado con el id ${id}`,
+      data: userCreated,
     });
   } catch (error) {
     next(error);
   }
 };
+
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { username } = req.params;
 
-    const user = await getPostsByUser(username);
+    const users = await getPostsByUser(username);
+
+    for (const user of users) {
+      user.comments = await selectCommentsFromPostById(user.id);
+    }
 
     res.send({
       status: 'ok',
-      data: user,
+      data: users,
     });
   } catch (error) {
     next(error);
@@ -59,11 +83,15 @@ const getPostsByUserIdController = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const user = await getPostsByUserId(id);
+    const users = await getPostsByUserId(id);
+
+    for (const user of users) {
+      user.comments = await selectCommentsFromPostById(user.id);
+    }
 
     res.send({
       status: 'ok',
-      data: user,
+      data: users,
     });
   } catch (error) {
     next(error);
@@ -114,9 +142,32 @@ const loginController = async (req, res, next) => {
   }
 };
 
+const getAllUsersController = async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+
+    for (const user of users) {
+      user.followes = await getFollowingsByUserId(user.id);
+      user.follows = await getFollowersByUserId(user.id);
+      const posts = (user.posts = await selectPostsByUserId(user.id));
+      for (const post of posts) {
+        post.comments = await selectCommentsFromPostById(post.id);
+      }
+    }
+
+    res.send({
+      status: 'ok',
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   newUserController,
   loginController,
   getPostsByUserController,
   getPostsByUserIdController,
+  getAllUsersController,
 };

@@ -57,6 +57,25 @@ const likeUp = async (userId, postId) => {
   }
 };
 
+const selectLikesFromPostsById = async (postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+      SELECT COUNT(*) AS totalLikes FROM likes WHERE post_id = ?
+      `,
+      [postId]
+    );
+
+    return result[0].totalLikes;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
   likeUp,
+  selectLikesFromPostsById,
 };

@@ -2,7 +2,7 @@ const fs = require('fs/promises');
 
 const generateError = (message, status) => {
   const error = new Error(message);
-  error.httpStatus = status;
+  error.httpStatusCode = status;
   return error;
 };
 

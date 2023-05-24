@@ -1,7 +1,8 @@
-const { getConnection } = require('./db');
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
-async function main() {
+const { getConnection } = require('./db');
+
+const main = async () => {
   let connection;
 
   try {
@@ -9,6 +10,9 @@ async function main() {
 
     await connection.query('USE hackagram');
 
+    await connection.query('DROP TABLE IF EXISTS commentsToComments');
+    await connection.query('DROP TABLE IF EXISTS messages');
+    await connection.query('DROP TABLE IF EXISTS follows');
     await connection.query('DROP TABLE IF EXISTS comments');
     await connection.query('DROP TABLE IF EXISTS likes');
     await connection.query('DROP TABLE IF EXISTS posts');
@@ -19,7 +23,13 @@ async function main() {
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
             username VARCHAR(50) UNIQUE NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            avatar VARCHAR(45),
+            role ENUM('admin', 'user') DEFAULT 'user',
+            is_active BOOLEAN DEFAULT true,
+            bio VARCHAR(255),
+            verification_code VARCHAR(24) NOT NULL,
+            verified_at DATETIME)`);
     console.log('Tabla users creada!!');
 
     await connection.query(`
@@ -45,7 +55,6 @@ async function main() {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     `);
-
     console.log('Tabla comments creada!!');
 
     await connection.query(`
@@ -59,12 +68,47 @@ async function main() {
     )
     `);
     console.log('Tabla likes creada!!');
+
+    await connection.query(`
+    CREATE TABLE follows (
+      id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      follower_id INT UNSIGNED NOT NULL,
+      followee_id INT UNSIGNED NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT follower_id_follows FOREIGN KEY (follower_id) REFERENCES users(id),
+      CONSTRAINT followee_id_follows FOREIGN KEY (followee_id) REFERENCES users(id)
+              )
+    `);
+    console.log('Tabla follows creada!!');
+
+    await connection.query(`
+    CREATE TABLE messages (
+      id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      sender_id INTEGER UNSIGNED,
+      receiver_id INTEGER UNSIGNED,
+      message VARCHAR(500) NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (sender_id) REFERENCES users(id),
+      FOREIGN KEY (receiver_id) REFERENCES users(id)
+            )`);
+    console.log('Tabla messages creada!!');
+
+    await connection.query(`
+    CREATE TABLE commentsToComments (
+      id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      comment VARCHAR(500),
+      comment_id INTEGER UNSIGNED,
+      user_id INTEGER UNSIGNED,
+      FOREIGN KEY (comment_id) REFERENCES comments(id),
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP);`);
+    console.log('Tabla commentsToComments creada!!');
   } catch (error) {
     console.error(error);
   } finally {
     if (connection) connection.release();
     process.exit();
   }
-}
+};
 
 main();

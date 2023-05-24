@@ -34,7 +34,7 @@ const getUserById = async (id) => {
 
     const [result] = await connection.query(
       `
-    SELECT id, email, username, created_at FROM users WHERE id=?
+    SELECT id, email, password, username, avatar, bio, created_at, verified_at FROM users WHERE id=?
     `,
       [id]
     );
@@ -60,7 +60,7 @@ const getPostsByUser = async (username) => {
       `
       SELECT p.id, post_image, post_text, COUNT(l.id) likes, p.created_at FROM posts p
       LEFT JOIN users u ON u.id = p.user_id
-      LEFT JOIN likes l ON p.id = l.post_id 
+      LEFT JOIN likes l ON p.id = l.post_id
       WHERE u.username = ?
       GROUP BY p.id
       ORDER BY p.created_at DESC
@@ -90,7 +90,7 @@ const getPostsByUserId = async (id) => {
 
     const [result] = await connection.query(
       `
-      SELECT p.id, post_image, post_text, COUNT(l.id) likes, p.created_at FROM posts p
+      SELECT u.id, p.id, post_image, post_text, COUNT(l.id) likes, p.created_at FROM posts p
       LEFT JOIN users u ON u.id = p.user_id
       LEFT JOIN likes l ON p.id = l.post_id 
       WHERE u.id = ?
@@ -114,7 +114,7 @@ const getPostsByUserId = async (id) => {
 };
 
 // Crea un usuario en la base de datos  y devuelve su id
-const createUser = async (email, password, username) => {
+const createUser = async (email, password, username, verificationCode) => {
   let connection;
 
   try {
@@ -134,13 +134,38 @@ const createUser = async (email, password, username) => {
     //Crear el usuario
     const [newUser] = await connection.query(
       `
-      INSERT INTO users (email, password, username) VALUES(?,?,?)
+      INSERT INTO users (email, password, username, verification_code) VALUES(?,?,?,?)
       `,
-      [email, passwordHash, username]
+      [email, passwordHash, username, verificationCode]
     );
 
     //Devolver la id
     return newUser.insertId;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+const getAllUsers = async () => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      SELECT u.id, u.username, u.bio, u.avatar,
+      (SELECT COUNT(*) FROM follows WHERE followee_id = u.id) AS followers,
+      (SELECT COUNT(*) FROM follows WHERE follower_id = u.id) AS followings
+    FROM users u
+    `
+    );
+
+    if (result.length === 0) {
+      throw generateError('El email o la contraseña no coinciden.', 401);
+    }
+
+    return result;
   } finally {
     if (connection) connection.release();
   }
@@ -152,4 +177,5 @@ module.exports = {
   getUserByEmail,
   getPostsByUser,
   getPostsByUserId,
+  getAllUsers,
 };
