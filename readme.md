@@ -18,6 +18,7 @@
 
 ### Futuros cambios
 
+- hay que añadir otra ruta GET a los mensajes para que te de un array de objetos con todos los usuarios con los que tienes conversaciones y tambien el ultimo mensaje que tienes en cada conversacion.
 - borrar una cuenta y todas sus fotos.
 - añadir un campo en users de cuentra privada o publica, si la tiene publica todo el mundo incluso los que no esten .registrados pueden ver su perfil completo y sus fotos, tambien pueden darle follow pero si la tiene privada solo pueden ver la foto del avatar y el nombre de usuario, para que pueda ver el perfil completo y sus fotos tiene que darle follow y el tiene que aceptarle.
 - los messages no se si que los envie cualquier persona si tienes el perfil en privado o solo las que te sigan.
