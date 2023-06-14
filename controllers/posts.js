@@ -57,7 +57,7 @@ const newPostController = async (req, res, next) => {
 
     const image = sharp(req.files.postImage.data);
     // Gracias al sharp redimensionamos fácilmente las imágenes
-    await image.resize(300, 200);
+    await image.resize(1000, 1000);
 
     const randomName = randomstring.generate(7) + '.jpg';
     // Generar nombre aleatorio con letras y números con máximo de 7 caracteres
