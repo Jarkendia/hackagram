@@ -1,10 +1,12 @@
 require('dotenv').config();
 const port = 4000;
-
+const cors = require('cors')
 const express = require('express');
 const morgan = require('morgan');
 const imageUpload = require('express-fileupload');
 const { authUser } = require('./middlewares/auth');
+
+
 
 // Controllers de USERS
 const {
@@ -32,6 +34,7 @@ const { postLikeController } = require('./controllers/likes');
 const { changeUsername } = require('./controllers/settings');
 
 const app = express();
+app.use(cors())
 app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));

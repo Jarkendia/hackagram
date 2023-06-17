@@ -14,6 +14,8 @@ const {
 } = require('../db/postsdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
 
+
+
 const getAllPostsController = async (req, res, next) => {
   try {
     const images = await getAllPosts();
