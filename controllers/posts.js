@@ -39,9 +39,10 @@ const newPostController = async (req, res, next) => {
     const { postText } = req.body;
     let imageFileName;
 
-    const schema = Joi.object({
-      postText: Joi.string().max(500),
-    });
+     const schema = Joi.object({
+       postImage: Joi.any(),
+       postText: Joi.string().max(500),
+     });
 
     const { error } = schema.validate(req.body);
 

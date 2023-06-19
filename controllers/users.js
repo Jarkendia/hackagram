@@ -6,6 +6,7 @@ const {
   getUserByEmail,
   getPostsByUser,
   getPostsByUserId,
+  getUserByMyId,
 } = require('../db/usersdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
 const Joi = require('joi');
@@ -55,15 +56,36 @@ const getPostsByUserController = async (req, res, next) => {
   }
 };
 
-const getPostsByUserIdController = async (req, res, next) => {
+const getMeController = async (req, res, next) => {
   try {
-    const { id } = req.params;
-
-    const user = await getPostsByUserId(id);
+    const user = await getUserByMyId(req.userId, false);
 
     res.send({
       status: 'ok',
       data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+
+};
+
+
+const getPostsByUserIdController = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    console.log(userId);
+
+    const users = await getPostsByUserId(userId);
+
+    for (const user of users) {
+      user.comments = await selectCommentsFromPostById(user.id);
+    }
+
+    res.send({
+      status: 'ok',
+      data: users,
     });
   } catch (error) {
     next(error);
@@ -119,4 +141,5 @@ module.exports = {
   loginController,
   getPostsByUserController,
   getPostsByUserIdController,
+  getMeController,
 };

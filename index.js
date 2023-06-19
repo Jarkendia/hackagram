@@ -14,6 +14,7 @@ const {
   getPostsByUserController,
   getPostsByUserIdController,
   loginController,
+  getMeController,
 } = require('./controllers/users');
 
 // Controllers de POSTS
@@ -43,7 +44,7 @@ app.use('/uploads', express.static('./uploads'));
 //Rutas para cada ENDPOINT
 //Rutas de usuario
 app.post('/user', newUserController);
-app.get('/user/id/:id', getPostsByUserIdController);
+app.get('/user/id' ,authUser, getPostsByUserIdController);
 app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
 
@@ -52,6 +53,8 @@ app.post('/', authUser, newPostController);
 app.get('/', getAllPostsController);
 app.get('/image/:post_text', getPostsController);
 app.delete('/image/:id', authUser, deletePostController);
+
+app.get('/user', authUser, getMeController);
 
 //Ruta de like
 app.post('/image/:imageId/like', authUser, postLikeController);
