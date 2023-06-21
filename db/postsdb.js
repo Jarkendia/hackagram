@@ -75,6 +75,30 @@ const getPostById = async (id) => {
   }
 };
 
+const getPostByName = async (post_image) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const [result] = await connection.query(
+      `
+      SELECT * FROM posts WHERE post_image = ?
+    `,
+      [post_image]
+    );
+
+    if (result.length === 0) {
+      throw generateError(
+        `La publicación con el nombre ${post_image} no existe`,
+        404
+      );
+    }
+
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 const getAllPosts = async () => {
   let connection;
   try {
@@ -141,4 +165,5 @@ module.exports = {
   getPostsByText,
   deletePostById,
   getPostById,
+  getPostByName,
 };

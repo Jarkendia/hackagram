@@ -1,12 +1,10 @@
 require('dotenv').config();
 const port = 4000;
-const cors = require('cors')
+const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const imageUpload = require('express-fileupload');
 const { authUser } = require('./middlewares/auth');
-
-
 
 // Controllers de USERS
 const {
@@ -22,6 +20,7 @@ const {
   getAllPostsController,
   newPostController,
   getPostsController,
+  getPostByRandomStringController,
   deletePostController,
 } = require('./controllers/posts');
 
@@ -35,7 +34,7 @@ const { postLikeController } = require('./controllers/likes');
 const { changeUsername } = require('./controllers/settings');
 
 const app = express();
-app.use(cors())
+app.use(cors());
 app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
@@ -44,13 +43,14 @@ app.use('/uploads', express.static('./uploads'));
 //Rutas para cada ENDPOINT
 //Rutas de usuario
 app.post('/user', newUserController);
-app.get('/user/id' ,authUser, getPostsByUserIdController);
+app.get('/user/id', authUser, getPostsByUserIdController);
 app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts
 app.post('/', authUser, newPostController);
 app.get('/', getAllPostsController);
+app.get('/p/:post_image', getPostByRandomStringController);
 app.get('/image/:post_text', getPostsController);
 app.delete('/image/:id', authUser, deletePostController);
 

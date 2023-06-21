@@ -28,7 +28,7 @@
 > Ruta pública: http://localhost:4000/
 
 - **POST /user** Registro de usuario ✅
-- **GET /user/:id** Muestra el perfil del usuario (por su Id) con sus datos y todas sus fotos ✅
+- **GET /user/id/:id** Muestra el perfil del usuario (por su Id) con sus datos y todas sus fotos ✅
 - **GET /user/:username** Muestra el perfil del usuario (por su username) con sus datos y todas sus fotos ✅
 - **POST /login** Acceso usuario (devuelve token) ✅
 - **POST /** Crear un post (necesita header con token) ✅

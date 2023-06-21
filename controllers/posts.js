@@ -11,10 +11,9 @@ const {
   getPostsByText,
   deletePostById,
   getPostById,
+  getPostByName,
 } = require('../db/postsdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
-
-
 
 const getAllPostsController = async (req, res, next) => {
   try {
@@ -39,10 +38,10 @@ const newPostController = async (req, res, next) => {
     const { postText } = req.body;
     let imageFileName;
 
-     const schema = Joi.object({
-       postImage: Joi.any(),
-       postText: Joi.string().max(500),
-     });
+    const schema = Joi.object({
+      postImage: Joi.any(),
+      postText: Joi.string().max(500),
+    });
 
     const { error } = schema.validate(req.body);
 
@@ -73,6 +72,29 @@ const newPostController = async (req, res, next) => {
     res.send({
       status: 'ok',
       message: `Imagen ${imageFileName} con id ${id} creada correctamente`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Buscar publicación por su id (o randomstring, más bien)
+const getPostByRandomStringController = async (req, res, next) => {
+  try {
+    const { post_image } = req.params;
+    // const postName = await getPostByName(post_image); MIRAR CÓMO EXTRAER .JPG
+    const postName = await getPostByName(post_image + '.jpg');
+    console.log(postName);
+    console.log(post_image);
+    // USAR SLICE
+    // https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+    // const { post_image } = req.params;
+    // const post = await getPostByName(post_image);
+    // postName = `${randomName} + ${post}`;
+
+    res.send({
+      status: 'Ok',
+      data: postName,
     });
   } catch (error) {
     next(error);
@@ -125,6 +147,7 @@ module.exports = {
   getAllPostsController,
   newPostController,
   getPostsController,
+  getPostByRandomStringController,
   deletePostController,
   selectCommentsFromPostById,
 };
