@@ -81,7 +81,12 @@ const getPostByName = async (post_image) => {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-      SELECT * FROM posts WHERE post_image = ?
+      SELECT p.*, u.username, COUNT(l.id) likes FROM posts p
+    LEFT JOIN users u ON u.id = p.user_id
+    LEFT JOIN likes l ON p.id = l.post_id 
+    WHERE post_image = ?
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
     `,
       [post_image]
     );
