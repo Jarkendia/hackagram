@@ -40,7 +40,7 @@ const newPostController = async (req, res, next) => {
 
     const schema = Joi.object({
       postImage: Joi.any(),
-      postText: Joi.string().max(500),
+      postText: Joi.string().allow('').max(500),
     });
 
     const { error } = schema.validate(req.body);
