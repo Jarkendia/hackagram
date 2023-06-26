@@ -48,7 +48,7 @@ app.get('/user/:username', getPostsByUserController);
 app.post('/login', loginController);
 
 //Rutas de Posts
-app.post('/', authUser, newPostController);
+app.post('/image', authUser, newPostController);
 app.get('/', getAllPostsController);
 app.get('/p/:post_image', getPostByRandomStringController);
 app.get('/image/:post_text', getPostsController);
