@@ -71,7 +71,7 @@ const newPostController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      message: `Imagen ${imageFileName} con id ${id} creada correctamente`,
+      data: `Imagen ${imageFileName} con id ${id} creada correctamente`,
     });
   } catch (error) {
     next(error);

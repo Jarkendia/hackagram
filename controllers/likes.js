@@ -8,12 +8,12 @@ const postLikeController = async (req, res, next) => {
 
     const image = await getPostById(imageId);
 
-    const likeId = await likeUp(userId, imageId);
+    const like = await likeUp(userId, imageId);
 
     res.send({
       status: 'Ok',
-      message: image,
-      likeId,
+      data: image,
+      like,
     });
   } catch (error) {
     next(error);

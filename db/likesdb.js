@@ -31,7 +31,7 @@ const likeUp = async (userId, postId) => {
 
       const updatedLikes = updatedResult[0].totalLikes;
 
-      return updatedLikes; // Devolver el número de "likes" actualizado
+      return { liked: false, totalLikes: updatedLikes }; // Devolver el número de "likes" actualizado
     } else {
       await connection.query(
         `
@@ -50,7 +50,7 @@ const likeUp = async (userId, postId) => {
 
       const updatedLikes = updatedResult[0].totalLikes;
 
-      return updatedLikes; // Devolver el número de "likes" actualizado
+      return { liked: true, totalLikes: updatedLikes }; // Devolver el número de "likes" actualizado
     }
   } finally {
     if (connection) connection.release();
