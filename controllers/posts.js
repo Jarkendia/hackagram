@@ -69,9 +69,11 @@ const newPostController = async (req, res, next) => {
 
     const id = await createPost(req.userId, imageFileName, postText);
 
+    const postImage = await getPostById(id);
+
     res.send({
       status: 'ok',
-      data: `Imagen ${imageFileName} con id ${id} creada correctamente`,
+      data: postImage,
     });
   } catch (error) {
     next(error);

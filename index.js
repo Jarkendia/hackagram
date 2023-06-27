@@ -31,7 +31,7 @@ const { newCommentInPostByIdController } = require('./controllers/comments');
 const { postLikeController } = require('./controllers/likes');
 
 // Controller de SETTINGS
-const { changeUsername } = require('./controllers/settings');
+const { changesUserController } = require('./controllers/settings');
 
 const app = express();
 app.use(cors());
@@ -63,7 +63,7 @@ app.post('/image/:imageId/like', authUser, postLikeController);
 app.post('/image/:id/comment', authUser, newCommentInPostByIdController);
 
 //Rutas de settings
-app.put('/settings', authUser, changeUsername);
+app.put('/settings', authUser, changesUserController);
 
 // Middleware del error 404 (ruta no encontrada)
 app.use((req, res) => {

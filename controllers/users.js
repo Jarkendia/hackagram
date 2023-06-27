@@ -7,10 +7,10 @@ const {
   getPostsByUser,
   getPostsByUserId,
   getUserByMyId,
+  getUserById,
 } = require('../db/usersdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
 const Joi = require('joi');
-const { getAllPosts } = require('../db/postsdb');
 
 const newUserController = async (req, res, next) => {
   try {
@@ -33,14 +33,17 @@ const newUserController = async (req, res, next) => {
     }
     const id = await createUser(email, password, username);
 
+    const user = await getUserById(id);
+
     res.send({
       status: 'ok',
-      message: `Perfil de ${username} creado con el id ${id}`,
+      data: user,
     });
   } catch (error) {
     next(error);
   }
 };
+
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { username } = req.params;
@@ -67,9 +70,7 @@ const getMeController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
 };
-
 
 const getPostsByUserIdController = async (req, res, next) => {
   try {

@@ -29,7 +29,9 @@ async function main() {
         FOREIGN KEY (user_id) REFERENCES users(id),
         post_text VARCHAR(500),
         post_image VARCHAR(100) NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        bio VARCHAR(1000),
+        avatar VARCHAR(75)
     )
     `);
     console.log('Tabla posts creada!!');

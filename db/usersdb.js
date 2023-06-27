@@ -34,7 +34,7 @@ const getUserById = async (id) => {
 
     const [result] = await connection.query(
       `
-    SELECT id, email, username, created_at FROM users WHERE id=?
+    SELECT * FROM users WHERE id=?
     `,
       [id]
     );
@@ -81,7 +81,6 @@ const getPostsByUser = async (username) => {
   }
 };
 
-
 //Seleccionar todos los posts de un usuario por su nombre de usuario
 const getPostsByUserId = async (id) => {
   let connection;
@@ -90,14 +89,12 @@ const getPostsByUserId = async (id) => {
     connection = await getConnection();
 
     const [result] = await connection.query(
-      
-     ` SELECT u.email, u.username, u.created_at, p.id, post_image, post_text, COUNT(l.id) likes, p.created_at FROM posts p
+      ` SELECT u.email, u.username, u.created_at, p.id, post_image, post_text, COUNT(l.id) likes, p.created_at FROM posts p
       LEFT JOIN users u ON u.id = p.user_id
       LEFT JOIN likes l ON p.id = l.post_id 
       WHERE u.id = ?
       GROUP BY p.id
-      ORDER BY p.created_at DESC`
-    ,
+      ORDER BY p.created_at DESC`,
       [id]
     );
 
@@ -154,9 +151,7 @@ const getUserByMyId = async (id, includePosts = true) => {
     connection = await getConnection();
 
     const [result] = await connection.query(
-      
-     `SELECT id, email, created_at FROM users WHERE id = ?`
-    ,
+      `SELECT id, email, created_at FROM users WHERE id = ?`,
       [id]
     );
 
