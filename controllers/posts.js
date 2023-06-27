@@ -86,9 +86,7 @@ const getSinglePostController = async (req, res, next) => {
     console.log(postName);
     console.log(post_image);
 
-    for (const image of postName) {
-      image.comments = await selectCommentsFromPostById(image.id);
-    }
+    postName.comments = await selectCommentsFromPostById(postName.id);
 
     res.send({
       status: 'Ok',
