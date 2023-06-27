@@ -31,22 +31,22 @@ const getPostsByText = async (text) => {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-      SELECT username Nombre, post_image Imagen, post_text Descripción, comment Comentario, likes.user_id Likes, posts.created_at Creado FROM posts
-LEFT JOIN users ON users.id = posts.user_id
-LEFT JOIN likes ON posts.id = likes.post_id 
-LEFT JOIN comments ON comments.post_id = posts.id
-WHERE post_text LIKE ?
-ORDER BY posts.created_at DESC
+      SELECT p.*, u.username, COUNT(l.id) likes FROM posts p
+    LEFT JOIN users u ON u.id = p.user_id
+    LEFT JOIN likes l ON p.id = l.post_id 
+    WHERE post_text LIKE ?
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
     `,
       [`%${text}%`]
     );
 
-    if (result.length === 0) {
-      throw generateError(
-        `La imagen con el texto descriptivo ${text} no existe`,
-        404
-      );
-    }
+    // if (result.length === 0) {
+    //   throw generateError(
+    //     `La imagen con el texto descriptivo ${text} no existe`,
+    //     404
+    //   );
+    // }
 
     return result;
   } finally {
@@ -115,7 +115,7 @@ const getAllPosts = async () => {
     GROUP BY p.id
     ORDER BY p.created_at DESC
     `);
-
+    console.log(result);
     return result;
   } finally {
     if (connection) connection.release();
