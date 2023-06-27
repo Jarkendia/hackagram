@@ -13,6 +13,7 @@ const {
   getPostsByUserIdController,
   loginController,
   getMeController,
+  getUsersController,
 } = require('./controllers/users');
 
 // Controllers de POSTS
@@ -52,6 +53,7 @@ app.post('/image', authUser, newPostController);
 app.get('/', getAllPostsController);
 app.get('/p/:post_image', getSinglePostController);
 app.get('/image/:post_text', getPostsController);
+app.get('/username/:username', getUsersController);
 app.delete('/image/:id', authUser, deletePostController);
 
 app.get('/user', authUser, getMeController);

@@ -165,6 +165,29 @@ const getUserByMyId = async (id, includePosts = true) => {
   }
 };
 
+const getUserByUsername = async (username) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+    SELECT username, avatar FROM users WHERE username = ?
+    `,
+      [username]
+    );
+
+    if (result.length === 0) {
+      throw generateError('El email o la contraseña no coinciden.', 401);
+    }
+
+    return result[0];
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 module.exports = {
   createUser,
   getUserById,
@@ -172,4 +195,5 @@ module.exports = {
   getPostsByUser,
   getPostsByUserId,
   getUserByMyId,
+  getUserByUsername,
 };

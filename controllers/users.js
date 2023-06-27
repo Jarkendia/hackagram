@@ -8,6 +8,7 @@ const {
   getPostsByUserId,
   getUserByMyId,
   getUserById,
+  getUserByUsername,
 } = require('../db/usersdb');
 const { selectCommentsFromPostById } = require('../db/commentsdb');
 const Joi = require('joi');
@@ -137,10 +138,25 @@ const loginController = async (req, res, next) => {
   }
 };
 
+const getUsersController = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const user = await getUserByUsername(username);
+
+    res.send({
+      status: 'Ok',
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   newUserController,
   loginController,
   getPostsByUserController,
   getPostsByUserIdController,
   getMeController,
+  getUsersController,
 };
