@@ -20,8 +20,8 @@ const {
   getAllPostsController,
   newPostController,
   getPostsController,
-  getPostByRandomStringController,
   deletePostController,
+  getSinglePostController,
 } = require('./controllers/posts');
 
 // Controllers de COMMENTS
@@ -50,7 +50,7 @@ app.post('/login', loginController);
 //Rutas de Posts
 app.post('/image', authUser, newPostController);
 app.get('/', getAllPostsController);
-app.get('/p/:post_image', getPostByRandomStringController);
+app.get('/p/:post_image', getSinglePostController);
 app.get('/image/:post_text', getPostsController);
 app.delete('/image/:id', authUser, deletePostController);
 

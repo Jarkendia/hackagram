@@ -98,7 +98,7 @@ const getPostByName = async (post_image) => {
       );
     }
 
-    return result[0];
+    return result;
   } finally {
     if (connection) connection.release();
   }
