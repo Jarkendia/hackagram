@@ -43,7 +43,7 @@ async function main() {
         user_id INTEGER UNSIGNED,
         post_id INTEGER UNSIGNED,
         CONSTRAINT user_id_comments FOREIGN KEY (user_id) REFERENCES users(id),
-        CONSTRAINT post_id_comments FOREIGN KEY (post_id) REFERENCES posts(id),
+        CONSTRAINT post_id_comments FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     `);

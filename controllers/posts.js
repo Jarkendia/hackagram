@@ -120,8 +120,6 @@ const deletePostController = async (req, res, next) => {
 
     const image = await getPostById(id);
 
-    console.log(image);
-
     if (req.userId !== image.user_id) {
       throw generateError(
         'Estás intentando borrar una imagen que no es tuya',
