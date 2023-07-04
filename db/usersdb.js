@@ -144,7 +144,7 @@ const createUser = async (email, password, username) => {
   }
 };
 
-const getUserByMyId = async (id, includePosts = true) => {
+const getUserByMyId = async (id) => {
   let connection;
 
   try {
@@ -173,16 +173,16 @@ const getUserByUsername = async (username) => {
 
     const [result] = await connection.query(
       `
-    SELECT username, avatar FROM users WHERE username = ?
+    SELECT id, username, avatar FROM users WHERE username LIKE ?
     `,
-      [username]
+      [`%${username}%`]
     );
 
     if (result.length === 0) {
-      throw generateError('El email o la contraseña no coinciden.', 401);
+      throw generateError('No existe ningún usuario con ese nombre.', 404);
     }
 
-    return result[0];
+    return result;
   } finally {
     if (connection) connection.release();
   }

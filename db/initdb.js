@@ -19,6 +19,8 @@ async function main() {
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
             username VARCHAR(50) UNIQUE NOT NULL,
+            bio VARCHAR(1000),
+            avatar VARCHAR(75),
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
     console.log('Tabla users creada!!');
 
@@ -29,9 +31,7 @@ async function main() {
         FOREIGN KEY (user_id) REFERENCES users(id),
         post_text VARCHAR(500),
         post_image VARCHAR(100) NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        bio VARCHAR(1000),
-        avatar VARCHAR(75)
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     `);
     console.log('Tabla posts creada!!');

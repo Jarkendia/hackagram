@@ -6,16 +6,15 @@ const postLikeController = async (req, res, next) => {
     const { imageId } = req.params;
     const { userId } = req;
 
-    const like = await likeUp(userId, imageId);
+    await likeUp(userId, imageId);
 
     const { post_image } = await getPostById(imageId);
 
-    const image = await getPostByName(post_image);
+    const image = await getPostByName(post_image, userId);
 
     res.send({
       status: 'Ok',
       data: image,
-      likes: like,
     });
   } catch (error) {
     next(error);

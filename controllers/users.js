@@ -62,7 +62,7 @@ const getPostsByUserController = async (req, res, next) => {
 
 const getMeController = async (req, res, next) => {
   try {
-    const user = await getUserByMyId(req.userId, false);
+    const user = await getUserByMyId(req.userId);
 
     res.send({
       status: 'ok',

@@ -75,20 +75,21 @@ const getPostById = async (id) => {
   }
 };
 
-const getPostByName = async (post_image) => {
+const getPostByName = async (post_image, userId) => {
   let connection;
   try {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-      SELECT p.*, u.username, COUNT(l.id) likes FROM posts p
+      SELECT p.*, u.username, COUNT(l.id) likes,
+    count(distinct l2.id) likedByLoggedUser FROM posts p
     LEFT JOIN users u ON u.id = p.user_id
-    LEFT JOIN likes l ON p.id = l.post_id 
+    LEFT JOIN likes l ON p.id = l.post_id
+    left join likes l2 on p.id = l2.post_id and l2.user_id = ?
     WHERE post_image = ?
     GROUP BY p.id
-    ORDER BY p.created_at DESC
-    `,
-      [post_image]
+    ORDER BY p.created_at DESC`,
+      [userId, post_image]
     );
 
     if (result.length === 0) {
@@ -104,18 +105,22 @@ const getPostByName = async (post_image) => {
   }
 };
 
-const getAllPosts = async () => {
+const getAllPosts = async (userId) => {
   let connection;
   try {
     connection = await getConnection();
-    const [result] = await connection.query(`
-    SELECT p.*, u.username, COUNT(l.id) likes FROM posts p
+    const [result] = await connection.query(
+      `  
+    SELECT p.*, u.username, COUNT(l.id) likes,
+    count(distinct l2.id) likedByLoggedUser FROM posts p
     LEFT JOIN users u ON u.id = p.user_id
-    LEFT JOIN likes l ON p.id = l.post_id 
+    LEFT JOIN likes l ON p.id = l.post_id
+    left join likes l2 on p.id = l2.post_id and l2.user_id = ?
     GROUP BY p.id
     ORDER BY p.created_at DESC
-    `);
-    console.log(result);
+    `,
+      [userId]
+    );
     return result;
   } finally {
     if (connection) connection.release();

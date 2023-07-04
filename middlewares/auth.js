@@ -4,6 +4,14 @@ const jwt = require('jsonwebtoken');
 const authUser = (req, res, next) => {
   try {
     const { authorization } = req.headers;
+    if (
+      (!authorization && req.params.post_image) ||
+      (!authorization && req.url === '/')
+    ) {
+      next();
+      return;
+    }
+
     if (!authorization) {
       throw generateError('Falta la cabecera de Authorization', 401);
     }

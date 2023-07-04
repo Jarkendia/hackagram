@@ -40,6 +40,7 @@ app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/uploads', express.static('./uploads'));
+app.use('/uploads/avatars', express.static('.uploads/avatars'));
 
 //Rutas para cada ENDPOINT
 //Rutas de usuario
@@ -50,8 +51,8 @@ app.post('/login', loginController);
 
 //Rutas de Posts
 app.post('/image', authUser, newPostController);
-app.get('/', getAllPostsController);
-app.get('/p/:post_image', getSinglePostController);
+app.get('/', authUser, getAllPostsController);
+app.get('/p/:post_image', authUser, getSinglePostController);
 app.get('/image/:post_text', getPostsController);
 app.get('/username/:username', getUsersController);
 app.delete('/image/:id', authUser, deletePostController);

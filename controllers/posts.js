@@ -17,16 +17,30 @@ const { selectCommentsFromPostById } = require('../db/commentsdb');
 
 const getAllPostsController = async (req, res, next) => {
   try {
-    const images = await getAllPosts();
+    const { userId } = req;
+    if (userId) {
+      const images = await getAllPosts(userId);
 
-    for (const image of images) {
-      image.comments = await selectCommentsFromPostById(image.id);
+      for (const image of images) {
+        image.comments = await selectCommentsFromPostById(image.id);
+      }
+
+      res.send({
+        status: 'ok',
+        data: images,
+      });
+    } else {
+      const images = await getAllPosts(null);
+
+      for (const image of images) {
+        image.comments = await selectCommentsFromPostById(image.id);
+      }
+
+      res.send({
+        status: 'ok',
+        data: images,
+      });
     }
-
-    res.send({
-      status: 'ok',
-      data: images,
-    });
   } catch (error) {
     next(error);
   }
@@ -84,16 +98,24 @@ const newPostController = async (req, res, next) => {
 const getSinglePostController = async (req, res, next) => {
   try {
     const { post_image } = req.params;
-    const postName = await getPostByName(post_image + '.jpg');
-    console.log(postName);
-    console.log(post_image);
+    if (req.userId) {
+      const postName = await getPostByName(post_image + '.jpg', req.userId);
 
-    postName.comments = await selectCommentsFromPostById(postName.id);
+      postName.comments = await selectCommentsFromPostById(postName.id);
 
-    res.send({
-      status: 'Ok',
-      data: postName,
-    });
+      res.send({
+        status: 'Ok',
+        data: postName,
+      });
+    } else {
+      const postName = await getPostByName(post_image + '.jpg', null);
+
+      postName.comments = await selectCommentsFromPostById(postName.id);
+      res.send({
+        status: 'Ok',
+        data: postName,
+      });
+    }
   } catch (error) {
     next(error);
   }
