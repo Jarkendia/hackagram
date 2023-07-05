@@ -151,7 +151,7 @@ const getUserByMyId = async (id) => {
     connection = await getConnection();
 
     const [result] = await connection.query(
-      `SELECT id, email, created_at FROM users WHERE id = ?`,
+      `SELECT id, email, username, avatar, created_at FROM users WHERE id = ?`,
       [id]
     );
 
