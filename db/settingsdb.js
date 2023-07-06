@@ -62,7 +62,7 @@ const changesUser = async (
       [idUser.id]
     );
 
-    return result;
+    return result[0];
   } finally {
     if (connection) connection.release();
   }

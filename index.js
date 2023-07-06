@@ -40,7 +40,7 @@ app.use(imageUpload());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/uploads', express.static('./uploads'));
-app.use('/uploads/avatars', express.static('.uploads/avatars'));
+app.use('/uploads/avatars', express.static('./uploads/avatars'));
 
 //Rutas para cada ENDPOINT
 //Rutas de usuario
