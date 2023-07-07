@@ -82,7 +82,7 @@ const changesUserController = async (req, res, next) => {
       image.toFile(path.join(uploadsDir, imageFileName));
     }
 
-    if (user.avatar) {
+    if (user.avatar && req.files?.newAvatar) {
       await fs.rm(path.join(uploadsDir, user.avatar));
     }
 
