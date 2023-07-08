@@ -30,7 +30,10 @@ const selectCommentsFromPostById = async (postId) => {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-          SELECT id, comment, user_id, post_id, created_at FROM comments WHERE post_id = ?
+      SELECT c.id, c.comment, c.user_id, c.post_id, c.created_at, u.username 
+      FROM comments c
+      JOIN users u ON c.user_id = u.id
+      WHERE c.post_id = ?
           `,
       [postId]
     );
