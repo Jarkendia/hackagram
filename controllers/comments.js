@@ -1,5 +1,8 @@
 const { getPostById } = require('../db/postsdb');
-const { createCommentFromPostById } = require('../db/commentsdb');
+const {
+  createCommentFromPostById,
+  selectCommentsFromPostById,
+} = require('../db/commentsdb');
 
 const newCommentInPostByIdController = async (req, res, next) => {
   try {
@@ -7,16 +10,13 @@ const newCommentInPostByIdController = async (req, res, next) => {
     const { userId } = req;
     const { comment } = req.body;
 
-    const postId = await getPostById(id);
-    const commentsPost = await createCommentFromPostById(
-      comment,
-      userId,
-      postId.id
-    );
+    await createCommentFromPostById(comment, userId, id);
+
+    const newComment = await selectCommentsFromPostById(id);
 
     res.send({
       status: 'Ok',
-      message: `El comentario ${comment} se registro correctamente en el post con la id ${postId.id}`,
+      data: newComment,
     });
   } catch (error) {
     next(error);
