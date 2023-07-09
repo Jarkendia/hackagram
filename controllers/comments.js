@@ -1,8 +1,4 @@
-const { getPostById } = require('../db/postsdb');
-const {
-  createCommentFromPostById,
-  selectCommentsFromPostById,
-} = require('../db/commentsdb');
+const { createCommentFromPostById } = require('../db/commentsdb');
 
 const newCommentInPostByIdController = async (req, res, next) => {
   try {
@@ -10,9 +6,7 @@ const newCommentInPostByIdController = async (req, res, next) => {
     const { userId } = req;
     const { comment } = req.body;
 
-    await createCommentFromPostById(comment, userId, id);
-
-    const newComment = await selectCommentsFromPostById(id);
+    const newComment = await createCommentFromPostById(comment, userId, id);
 
     res.send({
       status: 'Ok',

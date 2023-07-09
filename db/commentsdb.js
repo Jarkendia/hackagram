@@ -7,11 +7,18 @@ const createCommentFromPostById = async (comment, userId, postId) => {
 
   try {
     connection = await getConnection();
-    const [result] = await connection.query(
+    await connection.query(
       `
           INSERT INTO comments (comment, user_id, post_id) VALUES (?,?,?)
           `,
       [comment, userId, postId]
+    );
+
+    const [result] = await connection.query(
+      `
+          SELECT id, comment, user_id, post_id, created_at FROM comments WHERE post_id = ?
+          `,
+      [postId]
     );
 
     if (result.length === 0) {
