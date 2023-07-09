@@ -24,7 +24,7 @@ const createCommentFromPostById = async (comment, userId, postId) => {
     if (result.length === 0) {
       throw generateError('Esa imagen no existe', 404);
     }
-    return result[0];
+    return;
   } finally {
     if (connection) connection.release();
   }
@@ -37,7 +37,7 @@ const selectCommentsFromPostById = async (postId) => {
     connection = await getConnection();
     const [result] = await connection.query(
       `
-      SELECT c.id, c.comment, c.user_id, c.post_id, c.created_at, u.username 
+      SELECT c.id, c.comment, c.user_id, c.post_id, c.created_at, u.username
       FROM comments c
       JOIN users u ON c.user_id = u.id
       WHERE c.post_id = ?
