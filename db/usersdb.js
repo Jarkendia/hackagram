@@ -68,12 +68,12 @@ const getPostsByUser = async (username) => {
       [username]
     );
 
-    if (result.length === 0) {
-      throw generateError(
-        'No hay ningún usuario con ese nombre o dicho usuario no ha publicado nada',
-        404
-      );
-    }
+    // if (result.length === 0) {
+    //   throw generateError(
+    //     'No hay ningún usuario con ese nombre o dicho usuario no ha publicado nada',
+    //     404
+    //   );
+    // }
 
     return result;
   } finally {
